@@ -15,63 +15,56 @@ import javafx.stage.Stage;
 
 public class PixelenkentRajzolas extends Application {
 
-	private final Alert closeAlert = new Alert(Alert.AlertType.CONFIRMATION);
-	private final Random rand = new Random();
+    private final Alert closeAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
-	private void rajzolniValamit(final PixelWriter pw, final int width, final int height) {
+    private void printMandlebrotSet(final PixelWriter pw, final int width, final int height) {
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                ComplexNumber c = ComplexNumber.Transzformal(j, i, width, height, -0.6127/*x tengely*/, -0.4612/*y tengely*/, 1500/*Közelítés mértéke*/);
+                if (ComplexNumber.HalmazbanVanE(c)) {
+                    pw.setColor(j, i, Color.BLACK);
+                }
+            }
+        }
+    }
 
-		final Function<Double, Integer> fun = (final Double num) -> {
-			final int r = rand.nextInt(256);
-			final int x = Math.abs(num.intValue()) % 256;
-			return (r + x) / 2;
-		};
+    @Override
+    public void start(final Stage primaryStage) {
+        closeAlert.setTitle("Valóban?");
+        closeAlert.setHeaderText("Biztosan kilépsz?");
 
-		for (int i = 0; i < height; ++i) {
-			for (int j = 0; j < width; ++j) {
-				final double sn = Math.sin(i + j) * 1000.0;
-				final double cn = Math.cos(i - j) * 1000.0;
-				final double tn = Math.tan(i * j) * 1000.0;
-				final int sm = fun.apply(sn);
-				final int cm = fun.apply(cn);
-				final int tm = fun.apply(tn);
-				pw.setColor(j, i, Color.rgb(sm, cm, tm));
-			}
-		}
+        final int canvasWidth = 1750;
+        final int canvasHeight = 1050;
 
-	}
+        final Canvas canvas = new Canvas(canvasWidth, canvasHeight);
+        final GraphicsContext gc = canvas.getGraphicsContext2D();
 
-	@Override
-	public void start(final Stage primaryStage) {
-		closeAlert.setTitle("Valóban?");
-		closeAlert.setHeaderText("Biztosan kilépsz?");
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight);
+        PixelWriter pw1 = gc.getPixelWriter();
+        for (int i = canvasWidth / 2 - 1; i < canvasWidth / 2 + 2; i++) {
+            for (int j = canvasHeight / 2 - 1; j < canvasHeight / 2 + 2; j++) {
+                pw1.setColor(i, j, Color.RED);
+            }
+        }
 
-		final int canvasWidth = 1000;
-		final int canvasHeight = 500;
+        final Group root = new Group();
+        root.getChildren().add(canvas);
 
-		final Canvas canvas = new Canvas(canvasWidth, canvasHeight);
-		final GraphicsContext gc = canvas.getGraphicsContext2D();
+//        primaryStage.setOnCloseRequest(event -> {
+//            final ButtonType buttonType = closeAlert.showAndWait().get();
+//            if (buttonType == ButtonType.CANCEL) {
+//                event.consume();
+//            }
+//        });
+        primaryStage.setMaxHeight(canvasHeight);
+        primaryStage.setMaxWidth(canvasWidth);
+        primaryStage.setTitle("Pixelenkent Rajzolas");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+    }
 
-		rajzolniValamit(gc.getPixelWriter(), canvasWidth, canvasHeight);
-
-		final Group root = new Group();
-		root.getChildren().add(canvas);
-
-		primaryStage.setOnCloseRequest(event -> {
-			final ButtonType buttonType = closeAlert.showAndWait().get();
-			if (buttonType == ButtonType.CANCEL) {
-				event.consume();
-			}
-		});
-
-		primaryStage.setMaxHeight(canvasHeight);
-		primaryStage.setMaxWidth(canvasWidth);
-		primaryStage.setTitle("Pixelenkent Rajzolas");
-		primaryStage.setScene(new Scene(root));
-		primaryStage.show();
-	}
-
-	public static void main(String[] args) {
-		launch(args);
-	}
+    public static void main(String[] args) {
+        launch(args);
+    }
 
 }
