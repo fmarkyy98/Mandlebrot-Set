@@ -29,7 +29,7 @@ public class ComplexNumber {
         double a = this.realPart;
         double ia = this.imaginaryPart;
         double b = c.realPart;
-        double ib = c.imaginaryPart;      
+        double ib = c.imaginaryPart;
         this.realPart = a * b - ia * ib;
         this.imaginaryPart = a * ib + ia * b;
     }
@@ -45,15 +45,16 @@ public class ComplexNumber {
         return Math.pow(this.realPart, 2) + Math.pow(this.imaginaryPart, 2);
     }
 
-    public static ComplexNumber Transzformal(int m, int n, int width, int height) {
-        double x = (double) 3 * m / (width - 1) - 2;
-        double y = (double) 2 * n / (height - 1) - 1;
+    public static ComplexNumber Transzformal(int m, int n, int width, int height, double xTranslate, double yTranslate, double zoomIn) {
+        double x = (double) 5 * m / zoomIn / (width - 1) - (2.5 / zoomIn - xTranslate);
+        double y = (double) 3 * n / zoomIn / (height - 1) - (1.5 / zoomIn - yTranslate);
+
         ComplexNumber z = new ComplexNumber(x, y);
         return z;
     }
 
     public static boolean HalmazbanVanE(ComplexNumber c) {
-        int j = 500;
+        int j = 100/*Tolerancia*/;
         ComplexNumber x = new ComplexNumber(c);
         while (j > 0 && x.lenSquared() < 4) {
             x.mul(x);
