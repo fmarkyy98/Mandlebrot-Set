@@ -11,10 +11,8 @@ public class ComplexNumber {
     }
 
     public void mul(final ComplexNumber c) {
-        this.realPart *= c.realPart;
-        this.realPart *= c.imaginaryPart;
-        this.imaginaryPart *= c.realPart;
-        this.imaginaryPart *= c.imaginaryPart;
+        this.realPart = this.realPart * c.realPart - this.imaginaryPart * c.imaginaryPart;
+        this.imaginaryPart = this.realPart * c.imaginaryPart + this.imaginaryPart * c.realPart;
     }
 
     public ComplexNumber getConjugated() {
@@ -27,4 +25,7 @@ public class ComplexNumber {
     public double lenSquared() {
         return Math.pow(this.realPart, 2) + Math.pow(this.imaginaryPart, 2);
     }
+    
+    
+    
 }
