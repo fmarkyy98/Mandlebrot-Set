@@ -48,10 +48,17 @@ public class PixelenkentRajzolas extends Application {
         final Canvas canvas = new Canvas(canvasWidth, canvasHeight);
         final GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        for(int i=0;i<23;i++){
-            printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, -0.61333709, -0.461068, 1               , i+4      , Color.rgb(240-i*10, 240-i*10, 240-i*10));
-        }                                                                     /*x tengely , y tengely, Közelítés mértéke, tolrancia*/
-                
+        double x = -0.61333709;
+        double y = -0.461068;
+        double zoom = 1;
+        int tolerance = 10;
+        int shape =255;
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, tolerance, Color.LIGHTGRAY);
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, -0.61333709, -0.461068, 1, 25, Color.DARKGRAY);
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, -0.61333709, -0.461068, 1, 35, Color.GRAY);
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, -0.61333709, -0.461068, 1, 60, Color.BLACK);
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, -0.61333709, -0.461068, 1, 100, Color.rgb(259, 255, 255));
+        /*x tengely , y tengely, Közelítés mértéke, tolrancia*/
         printRedDot(gc, canvasWidth, canvasHeight);
 
         final Group root = new Group();
