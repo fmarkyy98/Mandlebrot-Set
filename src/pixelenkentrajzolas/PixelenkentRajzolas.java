@@ -17,13 +17,22 @@ public class PixelenkentRajzolas extends Application {
 
     private final Alert closeAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
-    private void printMandlebrotSet(final PixelWriter pw, final int width, final int height) {
+    private void printMandlebrotSet(final PixelWriter pw, final int width, final int height, double xTranslate, double yTranslate, double zoomIn, int tolerance, Color color) {
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
-                ComplexNumber c = ComplexNumber.Transzformal(j, i, width, height, -0.6127/*x tengely*/, -0.4612/*y tengely*/, 1500/*Közelítés mértéke*/);
-                if (ComplexNumber.HalmazbanVanE(c)) {
-                    pw.setColor(j, i, Color.BLACK);
+                ComplexNumber c = ComplexNumber.Transzformal(j, i, width, height, xTranslate, yTranslate, zoomIn);
+                if (ComplexNumber.HalmazbanVanE(c, tolerance)) {
+                    pw.setColor(j, i, color);
                 }
+            }
+        }
+    }
+
+    private void printRedDot(GraphicsContext gc, int canvasWidth, int canvasHeight) {
+        PixelWriter pw1 = gc.getPixelWriter();
+        for (int i = canvasWidth / 2 - 1; i < canvasWidth / 2 + 2; i++) {
+            for (int j = canvasHeight / 2 - 1; j < canvasHeight / 2 + 2; j++) {
+                pw1.setColor(i, j, Color.RED);
             }
         }
     }
@@ -39,13 +48,17 @@ public class PixelenkentRajzolas extends Application {
         final Canvas canvas = new Canvas(canvasWidth, canvasHeight);
         final GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight);
-        PixelWriter pw1 = gc.getPixelWriter();
-        for (int i = canvasWidth / 2 - 1; i < canvasWidth / 2 + 2; i++) {
-            for (int j = canvasHeight / 2 - 1; j < canvasHeight / 2 + 2; j++) {
-                pw1.setColor(i, j, Color.RED);
-            }
-        }
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, -0.61333709/*x tengely*/, -0.461068/*y tengely*/, 1000000/*Közelítés mértéke*/, 150, Color.LIGHTGRAY);
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, -0.61333709/*x tengely*/, -0.461068/*y tengely*/, 1000000/*Közelítés mértéke*/, 200, Color.DARKGRAY);
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, -0.61333709/*x tengely*/, -0.461068/*y tengely*/, 1000000/*Közelítés mértéke*/, 225, Color.GRAY);
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, -0.61333709/*x tengely*/, -0.461068/*y tengely*/, 1000000/*Közelítés mértéke*/, 250, Color.BLACK);
+        printRedDot(gc, canvasWidth, canvasHeight);
+//        PixelWriter pw1 = gc.getPixelWriter();
+//        for (int i = canvasWidth / 2 - 1; i < canvasWidth / 2 + 2; i++) {
+//            for (int j = canvasHeight / 2 - 1; j < canvasHeight / 2 + 2; j++) {
+//                pw1.setColor(i, j, Color.RED);
+//            }
+//        }
 
         final Group root = new Group();
         root.getChildren().add(canvas);
