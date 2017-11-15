@@ -53,8 +53,8 @@ public class ComplexNumber {
         return z;
     }
 
-    public static boolean HalmazbanVanE(ComplexNumber c) {
-        int j = 100/*Tolerancia*/;
+    public static boolean HalmazbanVanE(ComplexNumber c, int tolerance) {
+        int j = tolerance/*Tolerancia*/;
         ComplexNumber x = new ComplexNumber(c);
         while (j > 0 && x.lenSquared() < 4) {
             x.mul(x);
