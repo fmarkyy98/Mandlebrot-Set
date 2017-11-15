@@ -50,14 +50,14 @@ public class PixelenkentRajzolas extends Application {
 
         double x = -0.61333709;
         double y = -0.461068;
-        double zoom = 1;
-        int tolerance = 10;
-        int shape =255;
-        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, tolerance, Color.LIGHTGRAY);
-        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, -0.61333709, -0.461068, 1, 25, Color.DARKGRAY);
-        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, -0.61333709, -0.461068, 1, 35, Color.GRAY);
-        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, -0.61333709, -0.461068, 1, 60, Color.BLACK);
-        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, -0.61333709, -0.461068, 1, 100, Color.rgb(259, 255, 255));
+        double zoom = 2147483647;
+//        int tolerance = 10;
+//        int shape =255;
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 240, Color.LIGHTGRAY);
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 250, Color.DARKGRAY);
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 270, Color.GRAY);
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 290, Color.rgb(40, 40, 40));
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 310, Color.rgb(0, 0, 0));
         /*x tengely , y tengely, Közelítés mértéke, tolrancia*/
         printRedDot(gc, canvasWidth, canvasHeight);
 
