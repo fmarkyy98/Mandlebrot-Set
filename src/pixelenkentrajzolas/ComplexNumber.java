@@ -34,34 +34,28 @@ public class ComplexNumber {
         this.imaginaryPart = a * ib + ia * b;
     }
 
-    public ComplexNumber getConjugated() {
-        ComplexNumber c = new ComplexNumber();
-        c.realPart = this.realPart;
-        c.imaginaryPart = -this.imaginaryPart;
-        return c;
-    }
-
     public double lenSquared() {
-        return Math.pow(this.realPart, 2) + Math.pow(this.imaginaryPart, 2);
+        return this.realPart * this.realPart + this.imaginaryPart * this.imaginaryPart;
+
     }
 
-    public static ComplexNumber Transzformal(int m, int n, int width, int height, double xTranslate, double yTranslate, double zoomIn) {
-        double x = (double) 5 * m / zoomIn / (width - 1) - (2.5 / zoomIn - xTranslate);
-        double y = (double) 3 * n / zoomIn / (height - 1) - (1.5 / zoomIn - yTranslate);
-
-        ComplexNumber z = new ComplexNumber(x, y);
-        return z;
+    public static void Transzformal(ComplexNumber z, double m, double n, int width, int height, double xTranslate, double yTranslate, double zoomIn) {
+        double x = 5 * m / zoomIn / (width - 1) - (2.5 / zoomIn - xTranslate);
+        double y = 3 * n / zoomIn / (height - 1) - (1.5 / zoomIn - yTranslate);
+        z.realPart = x;
+        z.imaginaryPart = y;
     }
 
-    public static boolean HalmazbanVanE(ComplexNumber c, int tolerance) {
-        int j = tolerance/*Tolerancia*/;
-        ComplexNumber x = new ComplexNumber(c);
-        while (j > 0 && x.lenSquared() < 4) {
+    public int HalmazbanVanE(ComplexNumber x, int tolerance) {
+        int j = 255*2/*Tolerancia*/;
+        x.realPart = this.realPart;
+        x.imaginaryPart = this.imaginaryPart;
+        while ( x.lenSquared() < 4 && j > 0) {
             x.mul(x);
-            x.add(c);
+            x.add(this);
             j--;
         }
-        return j == 0;
+        return j;
     }
 
 }

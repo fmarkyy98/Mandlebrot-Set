@@ -10,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.PixelWriter;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -18,12 +19,22 @@ public class PixelenkentRajzolas extends Application {
     private final Alert closeAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
     private void printMandlebrotSet(final PixelWriter pw, final int width, final int height, double xTranslate, double yTranslate, double zoomIn, int tolerance, Color color) {
+        ComplexNumber c = new ComplexNumber();
+        ComplexNumber x = new ComplexNumber();
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
-                ComplexNumber c = ComplexNumber.Transzformal(j, i, width, height, xTranslate, yTranslate, zoomIn);
-                if (ComplexNumber.HalmazbanVanE(c, tolerance)) {
-                    pw.setColor(j, i, color);
+                ComplexNumber.Transzformal(c, j, i, width, height, xTranslate, yTranslate, zoomIn);
+                int a = c.HalmazbanVanE(x, tolerance);
+                Color q;
+                if (a < 256) {
+                    q = Color.rgb(a, a, a);
+                } else {
+
+                    q = Color.rgb(255, a - 255, a - 255);
                 }
+
+                pw.setColor(j, i, q);
+                //https://stackoverflow.com/questions/27389249/what-type-of-array-required-in-writableraster-method-setpixels
             }
         }
     }
@@ -36,7 +47,7 @@ public class PixelenkentRajzolas extends Application {
             }
         }
     }
-
+double zoom = 10;
     @Override
     public void start(final Stage primaryStage) {
         closeAlert.setTitle("Valóban?");
@@ -50,14 +61,18 @@ public class PixelenkentRajzolas extends Application {
 
         double x = -0.61333709;
         double y = -0.461068;
-        double zoom = 2147483647;
+        
+        
+        
+        
+        
 //        int tolerance = 10;
 //        int shape =255;
-        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 240, Color.LIGHTGRAY);
-        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 250, Color.DARKGRAY);
-        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 270, Color.GRAY);
-        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 290, Color.rgb(40, 40, 40));
-        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 310, Color.rgb(0, 0, 0));
+        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 200, Color.LIGHTGRAY);
+//        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 215, Color.DARKGRAY);
+//        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 230, Color.GRAY);
+//        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 255, Color.rgb(40, 40, 40));
+//        printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 280, Color.rgb(0, 0, 0));
         /*x tengely , y tengely, Közelítés mértéke, tolrancia*/
         printRedDot(gc, canvasWidth, canvasHeight);
 
@@ -70,10 +85,19 @@ public class PixelenkentRajzolas extends Application {
 //                event.consume();
 //            }
 //        });
+Scene scene = new Scene(root);
+scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.A) {
+                zoom *= 10;
+                event.consume();
+                printMandlebrotSet(gc.getPixelWriter(), canvasWidth, canvasHeight, x, y, zoom, 200, Color.LIGHTGRAY);
+            }
+        });
+
         primaryStage.setMaxHeight(canvasHeight);
         primaryStage.setMaxWidth(canvasWidth);
         primaryStage.setTitle("Pixelenkent Rajzolas");
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
